@@ -13,9 +13,9 @@ namespace ODMDemo
     internal class DemoApp : IDisposable
     {
         private IntPtr window;
-        static internal IntPtr renderer;
-        private uint width = 800;
-        private uint height = 600;
+        public static IntPtr renderer;
+        public static uint width = 1920;
+        public static uint height = 1080;
         private bool running = true;
         Stopwatch stopwatch = new Stopwatch();
         Scene scene;
@@ -39,21 +39,33 @@ namespace ODMDemo
 
             ODM.ObjectInitializer.Init();
 
-            scene = new Scene
+            var texture = ResourceCache.Load<Texture>(MediaPath + "Sprite01.png");
+
+            scene = new Scene();
+
+            for(int i = 0; i < 1000; i++)
             {
-                new Entity
+                var entity = new Entity
                 {
                     new Transform
                     {
-
+                        Postion = MathUtil.RandomVector2(),
+                        Scale = 0.1f,
                     },
 
                     new Renderable
                     {
-                        Texture = ResourceCache.Load<Texture>( MediaPath + "Sprite01.png"),
+                        Texture = texture,
+                    },
+
+                    new Character
+                    {
+                        DestPoint = MathUtil.RandomVector2()
                     }
-                }
-            };
+                };
+
+                scene.Add(entity);
+            }
 
         }
 
@@ -167,6 +179,8 @@ namespace ODMDemo
 
         public void Dispose()
         {
+            scene?.Dispose();
+
             World.Exit();
         }
     }

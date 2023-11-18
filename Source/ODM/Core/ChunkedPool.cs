@@ -40,7 +40,8 @@ namespace ODM
             get
             {
                 int chunck = (int)index / ChunkSize;
-                return ref values[chunck][index];
+                int chunckIndex = (int)index % ChunkSize;
+                return ref values[chunck][chunckIndex];
             }
         }
 
@@ -49,14 +50,15 @@ namespace ODM
             if(!freeList.TryTake(out var id))
             {
                 id = Interlocked.Increment(ref currentID);
-                int chunck = (int)(id - 1) / ChunkSize;
-                if(chunck >= values.Length)
-                {
-                    Array.Resize(ref values, values.Length + StepChunks);
-                    values[chunck] = new T[ChunkSize];
-                }
-
             }
+
+            int chunck = (int)id / ChunkSize;
+            if(chunck >= values.Length)
+            {
+                Array.Resize(ref values, values.Length + StepChunks);
+            }
+
+            values[chunck] ??= new T[ChunkSize];
 
             this[id] = v;
 

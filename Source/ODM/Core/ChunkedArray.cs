@@ -39,7 +39,7 @@ namespace ODM
 
                 values[chunck] ??= new T[ChunkSize];
 
-                return ref values[chunck][index];
+                return ref values[chunck][chunckIndex];
             }
 
 
