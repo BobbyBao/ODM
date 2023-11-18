@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Resource\" />
+  </ItemGroup>
+
+	<PropertyGroup>
+		<!-- Persist the source generator (and other) files to disk -->
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<!-- 👇 The "base" path for the source generators -->
+		<GeneratedFolder>Generated</GeneratedFolder>
+		<!-- 👇 Write the output for each target framework to a different sub-folder -->
+		<CompilerGeneratedFilesOutputPath>$(GeneratedFolder)\$(TargetFramework)</CompilerGeneratedFilesOutputPath>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<PlatformTarget>x64</PlatformTarget>
+		<Authors>BobbyBao</Authors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- 👇 Exclude everything in the base folder -->
+		<Compile Remove="$(GeneratedFolder)/**/*.cs" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Collections.Pooled" Version="2.0.0-preview.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ODM.Generator\ODM.Generator.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+
+</Project>
